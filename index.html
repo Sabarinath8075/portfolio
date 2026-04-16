@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width">
   <title>Sabari Nath</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -15,16 +15,19 @@
     }
   </style>
 
+
   <header>
     <div class="logo">SABARINATH G</div>
-    <nav>
+
+    <nav id="nav">
       <a href="#">Home</a>
       <a href="#gallery">Gallery</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
-  </header>
 
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+  </header>
   <!-- HERO -->
   <section class="hero">
     <div class="hero-overlay"></div>
@@ -38,16 +41,16 @@
   <!-- GALLERY -->
   <section id="gallery">
     <div class="section-head">
-      <h2>Selected Work</h2>
+      <h2>Gallery</h2>
     </div>
 
     <div class="gallery-grid">
-      <img src="./bg3.jpg">
-      <img src="images/p2.jpg">
-      <img src="images/p3.jpg">
-      <img src="images/p4.jpg">
-      <img src="images/p5.jpg">
-      <img src="images/p6.jpg">
+      <img src="./bg3.jpg" loading="lazy" onclick="openLightbox(0)">
+      <img src="./bg3.jpg" loading="lazy" onclick="openLightbox(0)">
+      <img src="./bg3.jpg" loading="lazy" onclick="openLightbox(0)">
+      <img src="./bg3.jpg" loading="lazy" onclick="openLightbox(0)">
+      <img src="./bg3.jpg" loading="lazy" onclick="openLightbox(0)">
+      <img src="./bg3.jpg" loading="lazy" onclick="openLightbox(0)">
     </div>
   </section>
 
@@ -70,7 +73,13 @@
     <h2>Contact</h2>
     <a href="mailto:sabarinath8075@gmail.com">Gmail</a>
   </section>
-
+  <script src="script.js"></script>
+  <div id="lightbox">
+    <span class="close" onclick="closeLightbox()">×</span>
+    <span class="prev" onclick="changeSlide(-1)">❮</span>
+    <img id="lightbox-img">
+    <span class="next" onclick="changeSlide(1)">❯</span>
+  </div>
 </body>
 
 </html>

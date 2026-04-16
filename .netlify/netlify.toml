@@ -7,7 +7,7 @@ redirects = []
 [functions."*"]
 
 [build]
-publish = "/data/data/com.termux/files/home/linkinbio"
+publish = "/data/data/com.termux/files/home/portfolio"
 publishOrigin = "default"
 
 [build.environment]
