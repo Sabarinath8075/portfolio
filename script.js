@@ -1,5 +1,5 @@
 // ==========================
-// MOBILE MENU TOGGLE
+// MOBILE MENU
 // ==========================
 function toggleMenu() {
   const nav = document.getElementById("nav");
@@ -8,59 +8,31 @@ function toggleMenu() {
 
 
 // ==========================
-// SMOOTH SCROLL
+// FILTER BUTTONS (GALLERY)
 // ==========================
-function scrollToGallery() {
-  const gallery = document.getElementById("gallery");
-  if (gallery) {
-    gallery.scrollIntoView({ behavior: "smooth" });
-  }
-}
+function filterImages(category, event) {
+  const cards = document.querySelectorAll(".gallery-grid .card");
+  const buttons = document.querySelectorAll(".filters button");
 
+  // active button highlight
+  buttons.forEach(btn => btn.classList.remove("active"));
+  if (event) event.target.classList.add("active");
 
-// ==========================
-// SCROLL REVEAL (FIXED)
-// ==========================
-function revealOnScroll() {
-  const reveals = document.querySelectorAll(".reveal");
-  const windowHeight = window.innerHeight;
-
-  reveals.forEach(el => {
-    const elementTop = el.getBoundingClientRect().top;
-
-    if (elementTop < windowHeight - 100) {
-      el.classList.add("active");
+  // filter logic
+  cards.forEach(card => {
+    if (category === "all" || card.classList.contains(category)) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
     }
   });
 }
 
-window.addEventListener("scroll", revealOnScroll);
-window.addEventListener("load", revealOnScroll);
-
 
 // ==========================
-// LAZY LOAD (FADE-IN)
+// LIGHTBOX (FULL SCREEN VIEW)
 // ==========================
-const lazyImages = document.querySelectorAll(".gallery-grid img");
-
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("loaded");
-      observer.unobserve(entry.target);
-    }
-  });
-}, {
-  threshold: 0.1
-});
-
-lazyImages.forEach(img => observer.observe(img));
-
-
-// ==========================
-// LIGHTBOX + NAVIGATION
-// ==========================
-const images = Array.from(document.querySelectorAll(".gallery-grid img"));
+const images = document.querySelectorAll(".gallery-grid img");
 let currentIndex = 0;
 
 function openLightbox(index) {
@@ -93,7 +65,7 @@ function changeSlide(direction) {
 
 
 // ==========================
-// KEYBOARD CONTROLS
+// KEYBOARD SUPPORT
 // ==========================
 document.addEventListener("keydown", (e) => {
   const lightbox = document.getElementById("lightbox");
@@ -107,38 +79,22 @@ document.addEventListener("keydown", (e) => {
 
 
 // ==========================
-// IMAGE STAGGER ANIMATION
+// LAZY LOAD (FADE-IN)
 // ==========================
-function showImages() {
-  const imgs = document.querySelectorAll(".gallery-grid img");
-  const triggerBottom = window.innerHeight - 100;
+const lazyImages = document.querySelectorAll(".gallery-grid img");
 
-  imgs.forEach((img, index) => {
-    const imgTop = img.getBoundingClientRect().top;
-
-    if (imgTop < triggerBottom) {
-      setTimeout(() => {
-        img.classList.add("show");
-      }, index * 100);
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("loaded");
+      observer.unobserve(entry.target);
     }
   });
-}
-
-window.addEventListener("scroll", showImages);
-window.addEventListener("load", showImages);
-
-
-// ==========================
-// HERO PARALLAX EFFECT
-// ==========================
-window.addEventListener("scroll", () => {
-  const hero = document.querySelector(".hero");
-
-  if (hero) {
-    const scrollY = window.scrollY;
-    hero.style.backgroundPositionY = scrollY * 0.5 + "px";
-  }
+}, {
+  threshold: 0.1
 });
+
+lazyImages.forEach(img => observer.observe(img));
 
 
 // ==========================
@@ -153,6 +109,6 @@ window.addEventListener("scroll", () => {
     header.style.background = "rgba(0,0,0,0.85)";
     header.style.backdropFilter = "blur(14px)";
   } else {
-    header.style.background = "rgba(0,0,0,0.4)";
+    header.style.background = "rgba(0,0,0,0.5)";
   }
 });

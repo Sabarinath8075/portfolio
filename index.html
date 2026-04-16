@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">>
   <title>Sabari Nath</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -33,27 +33,40 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <h1>CAPTURING<br>MOMENTS<br>THAT MATTER</h1>
-      <p>Through light, emotion, and perspective</p>
+      <p>Turning ordinary scenes into powerful stories through light, composition and perspective.</p>
       <button>Explore Work</button>
     </div>
   </section>
 
   <!-- GALLERY -->
   <section id="gallery">
-    <div class="section-head">
-      <h2>Gallery</h2>
+
+    <div class="gallery-top">
+      <div>
+        <p class="sub-title">MY WORK</p>
+        <h2>Gallery</h2>
+      </div>
+
+      <div class="filters">
+        <button class="active" onclick="filterImages('all', event)">All</button>
+        <button onclick="filterImages('portrait', event)">Portraits</button>
+        <button onclick="filterImages('nature', event)">Nature</button>
+        <button onclick="filterImages('street', event)">Street</button>
+      </div>
     </div>
 
     <div class="gallery-grid">
-      <img src="./bg3.jpg" loading="lazy" onclick="openLightbox(0)">
-      <img src="./bg3.jpg" loading="lazy" onclick="openLightbox(0)">
-      <img src="./bg3.jpg" loading="lazy" onclick="openLightbox(0)">
-      <img src="./bg3.jpg" loading="lazy" onclick="openLightbox(0)">
-      <img src="./bg3.jpg" loading="lazy" onclick="openLightbox(0)">
-      <img src="./bg3.jpg" loading="lazy" onclick="openLightbox(0)">
-    </div>
-  </section>
 
+      <div class="card portrait"><img src="./bg3.jpg" onclick="openLightbox(0)"></div>
+      <div class="card nature"><img src="./bg3.jpg" onclick="openLightbox(1)"></div>
+      <div class="card street"><img src="./bg3.jpg" onclick="openLightbox(2)"></div>
+      <div class="card nature"><img src="./bg3.jpg" onclick="openLightbox(3)"></div>
+      <div class="card street"><img src="./bg3.jpg" onclick="openLightbox(4)"></div>
+      <div class="card street"><img src="./bg3.jpg" onclick="openLightbox(5)"></div>
+
+    </div>
+
+  </section>
   <!-- ABOUT -->
   <section id="about">
     <div class="about-text">

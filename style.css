@@ -110,7 +110,7 @@ nav a:hover {
 
 /* GALLERY */
 #gallery {
-  padding: 120px 80px;
+  padding: 80px 20px;
 }
 
 .section-head {
@@ -125,7 +125,7 @@ nav a:hover {
 
 /* PINTEREST STYLE */
 .gallery-grid {
-  column-count: 2;
+  column-count: unset;
   column-gap: 15px;
 }
 
@@ -145,13 +145,28 @@ nav a:hover {
 }
 
 /* ABOUT */
+/* CONTACT */
+/* ABOUT SECTION */
 #about {
-  padding: 120px 80px;
+  padding: 100px 80px;
   display: flex;
-  gap: 60px;
   align-items: center;
+  gap: 60px;
 }
 
+/* IMAGE LEFT */
+.about-img {
+  flex: 1;
+}
+
+.about-img img {
+  width: 100%;
+  max-width: 350px;
+  border-radius: 12px;
+  display: block;
+}
+
+/* TEXT RIGHT */
 .about-text {
   flex: 1;
 }
@@ -166,13 +181,8 @@ nav a:hover {
   line-height: 1.6;
 }
 
-.about-img img {
-  width: 320px;
-}
-
-/* CONTACT */
 #contact {
-  padding: 120px 80px;
+  padding: 80px 20px;
   text-align: center;
 }
 
@@ -195,6 +205,7 @@ nav a:hover {
   }
 
   #about {
+    padding: 80px 20px;
     flex-direction: column;
   }
 }
@@ -388,7 +399,96 @@ nav a:hover {
   transform: translateY(0);
 }
 
+padding: 80px 20px;
+
 .gallery-grid img.loaded {
   opacity: 1;
   transform: scale(1);
+}
+
+/* HORIZONTAL SCROLL FIX */
+.horizontal-scroll {
+  display: flex !important;
+  overflow-x: auto;
+  gap: 20px;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 10px;
+}
+
+/* hide scrollbar */
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* image cards */
+.horizontal-scroll img {
+  min-width: 280px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+/* TOP HEADER */
+.gallery-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.sub-title {
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.gallery-top h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+}
+
+/* FILTER BUTTONS */
+.filters button {
+  background: #111;
+  color: #aaa;
+  border: none;
+  padding: 1.5em 1em;
+  margin-left: 10px;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.filters button.active {
+  background: var(--gold);
+  color: black;
+}
+
+/* GRID LAYOUT (MAIN FIX) */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* CARD */
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* IMAGE */
+.card img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+  transition: 0.4s;
+}
+
+/* HOVER */
+.card:hover img {
+  transform: scale(1.05);
 }
