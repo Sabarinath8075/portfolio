@@ -20,8 +20,14 @@ function filterImages(category, event) {
 
   // filter logic
   cards.forEach(card => {
+    const img = card.querySelector("img");
     if (category === "all" || card.classList.contains(category)) {
       card.style.display = "block";
+      // Trigger re-animation
+      if (img) {
+        img.classList.remove("loaded");
+        setTimeout(() => img.classList.add("loaded"), 10);
+      }
     } else {
       card.style.display = "none";
     }
@@ -54,13 +60,23 @@ function closeLightbox() {
 function changeSlide(direction) {
   if (images.length === 0) return;
 
-  currentIndex += direction;
+  const lightboxImg = document.getElementById("lightbox-img");
+  
+  // Add a quick fade-out effect
+  lightboxImg.style.opacity = "0";
+  lightboxImg.style.transform = "scale(0.95)";
 
-  if (currentIndex < 0) currentIndex = images.length - 1;
-  if (currentIndex >= images.length) currentIndex = 0;
+  setTimeout(() => {
+    currentIndex += direction;
+    if (currentIndex < 0) currentIndex = images.length - 1;
+    if (currentIndex >= images.length) currentIndex = 0;
 
-  document.getElementById("lightbox-img").src =
-    images[currentIndex].src;
+    lightboxImg.src = images[currentIndex].src;
+    
+    // Fade back in
+    lightboxImg.style.opacity = "1";
+    lightboxImg.style.transform = "scale(1)";
+  }, 200);
 }
 
 
