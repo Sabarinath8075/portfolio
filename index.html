@@ -6,9 +6,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Sabari Nath</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
+
   <header>
     <div class="logo">SABARINATH G</div>
 
@@ -25,8 +27,10 @@
   <section class="hero">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1>CAPTURING<br>MOMENTS<br>THAT MATTER</h1>
-      <p>Turning ordinary scenes into powerful stories through light, composition and perspective.</p>
+      <h1>THE WORLD THROUGH A <span>MOBILE</span> LENS</h1>
+      <p>Capturing extraordinary cinematic stories with the tool that's always in my pocket. 
+         True storytelling knows no equipment boundaries.
+      </p>
     </div>
   </section>
 
@@ -35,8 +39,8 @@
 
     <div class="gallery-top">
       <div>
-        <p class="sub-title">MY WORK</p>
-        <h2>Gallery</h2>
+        <p class="sub-title">MOBILE ARTISTRY</p>
+        <h2>The Collection</h2>
       </div>
 
       <div class="filters">
@@ -49,13 +53,62 @@
 
     <div class="gallery-grid">
 
-      <div class="card portrait"><img src="./bg3.jpg" onclick="openLightbox(0)"></div>
-      <div class="card nature"><img src="./bg3.jpg" onclick="openLightbox(1)"></div>
-      <div class="card street"><img src="./bg3.jpg" onclick="openLightbox(2)"></div>
-      <div class="card nature"><img src="./bg3.jpg" onclick="openLightbox(3)"></div>
-      <div class="card street"><img src="./bg3.jpg" onclick="openLightbox(4)"></div>
-      <div class="card street"><img src="./bg3.jpg" onclick="openLightbox(5)"></div>
+      <div class="card street">
+        <img src="./IMG_20251225_142422459.webp" onclick="openLightbox(this)">
+      </div>
 
+      <div class="card nature">
+        <img src="./IMG_20251225_142916304.webp" onclick="openLightbox(this)">
+      </div>
+
+      <div class="card street">
+        <img src="./IMG_20260125_171950744 (1) (1).webp" onclick="openLightbox(this)">
+      </div>
+
+      <div class="card nature show-more">
+        <img src="./ReLens_Image_2025-12-27_15_45_11_3072x4096.webp" onclick="openLightbox(this)">
+      </div>
+
+      <div class="card street show-more">
+        <img src="./IMG_20260125_175805901.webp" onclick="openLightbox(this)">
+      </div>
+
+      <div class="card street show-more">
+        <img src="./bg3.jpg" onclick="openLightbox(this)">
+      </div>
+
+      <div class="card portrait show-more">
+        <img src="./bg3.jpg" onclick="openLightbox(this)">
+      </div>
+
+      <div class="card nature show-more">
+        <img src="./bg3.jpg" onclick="openLightbox(this)">
+      </div>
+
+      <div class="card street show-more">
+        <img src="./bg3.jpg" onclick="openLightbox(this)">
+      </div>
+
+      <div class="card portrait show-more">
+        <img src="./bg3.jpg" onclick="openLightbox(this)">
+      </div>
+
+      <div class="card nature show-more">
+        <img src="./bg3.jpg" onclick="openLightbox(this)">
+      </div>
+
+      <div class="card street show-more">
+        <img src="./bg3.jpg" onclick="openLightbox(this)">
+      </div>
+
+      <div class="card portrait show-more">
+        <img src="./bg3.jpg" onclick="openLightbox(this)">
+      </div>
+
+    </div>
+
+    <div class="gallery-footer">
+      <button id="view-all-btn" onclick="expandGallery()">More</button>
     </div>
 
   </section>
@@ -63,27 +116,17 @@
   <section id="about">
     <div class="about-container">
       <div class="about-img">
-        <img src="./me1.jpg" alt="Sabari Nath">
+        <img src="./IMG_1111~2.webp" alt="Sabari Nath">
         <div class="img-border"></div>
       </div>
       <div class="about-content">
         <p class="sub-title">THE VISION</p>
-        <h2>Storytelling Through A Lens</h2>
+        <h2>Authenticity in Every Pocket</h2>
         <p class="description">
-          Based in the heart of visual storytelling, I specialize in capturing the raw, 
-          unfiltered essence of moments. My approach blends cinematic techniques with 
-          a deep appreciation for light and shadow.
+          I believe the best camera is the one you have with you. My work focuses on 
+          the raw, unfiltered beauty of daily life, proving that cinematic moments 
+          are everywhere—if you know how to look through the mobile lens.
         </p>
-        <div class="about-stats">
-          <div class="stat">
-            <span class="gold-text">05+</span>
-            <p>Years of Experience</p>
-          </div>
-          <div class="stat">
-            <span class="gold-text">120+</span>
-            <p>Successful Projects</p>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -91,21 +134,25 @@
   <!-- CONTACT -->
   <section id="contact">
     <div class="contact-container">
-      <p class="sub-title">GET IN TOUCH</p>
-      <h2>Let's Create Something<br>Extraordinary</h2>
+      <p class="sub-title">LET'S COLLABORATE</p>
+      <h2>Ready to tell your<br>story?</h2>
       <div class="contact-btns">
-        <a href="mailto:sabarinath8075@gmail.com" class="btn email-btn">Email Me</a>
-        <a href="https://www.instagram.com/your_instagram_handle" target="_blank" class="btn insta-btn">Instagram</a>
+        <a href="mailto:sabarinath8075@gmail.com" class="social-btn" title="Email Me">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
+        <a href="https://www.instagram.com/sabari_nath_._" target="_blank" class="social-btn" title="Follow My Journey">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
       </div>
     </div>
   </section>
-  <script src="script.js"></script>
   <div id="lightbox">
     <span class="close" onclick="closeLightbox()">×</span>
     <span class="prev" onclick="changeSlide(-1)">❮</span>
     <img id="lightbox-img">
     <span class="next" onclick="changeSlide(1)">❯</span>
   </div>
+  <script src="script.js"></script>
 </body>
 
 </html>

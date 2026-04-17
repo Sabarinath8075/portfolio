@@ -1,10 +1,85 @@
 // ==========================
+// HERO LOAD EFFECT
+// ==========================
+window.addEventListener("load", () => {
+  document.body.classList.add("js-enabled"); // Activate scroll reveal animations
+  const hero = document.querySelector(".hero");
+  if (hero) {
+    setTimeout(() => {
+      hero.classList.add("loaded");
+    }, 100);
+  }
+});
+
+
+// ==========================
+// EXPAND/COLLAPSE GALLERY
+// ==========================
+function expandGallery() {
+  const grid = document.querySelector(".gallery-grid");
+  const btn = document.getElementById("view-all-btn");
+  const hiddenCards = document.querySelectorAll(".card.show-more");
+
+  if (!grid || !btn) return;
+
+  const isExpanding = !grid.classList.contains("expanded");
+
+  if (isExpanding) {
+    // EXPAND
+    grid.classList.add("expanded");
+    btn.textContent = "Less";
+
+    hiddenCards.forEach((card, index) => {
+      // Small timeout for each card for staggered effect
+      setTimeout(() => {
+        card.classList.add("visible");
+        const img = card.querySelector("img");
+        if (img) img.classList.add("loaded");
+      }, index * 40);
+    });
+  } else {
+    // COLLAPSE
+    btn.textContent = "More";
+
+    // Reverse staggered collapse
+    const reversedCards = Array.from(hiddenCards).reverse();
+    reversedCards.forEach((card, index) => {
+      setTimeout(() => {
+        card.classList.remove("visible");
+      }, index * 30);
+    });
+
+    // Actually hide the cards after the transition is done
+    setTimeout(() => {
+      grid.classList.remove("expanded");
+      // Scroll back to gallery top smoothly
+      document.getElementById("gallery").scrollIntoView({ behavior: 'smooth' });
+    }, (hiddenCards.length * 30) + 400);
+  }
+}
+
+
+// ==========================
 // MOBILE MENU
 // ==========================
 function toggleMenu() {
   const nav = document.getElementById("nav");
-  if (nav) nav.classList.toggle("active");
+  if (nav) {
+    const isActive = nav.classList.toggle("active");
+    document.body.classList.toggle("no-scroll", isActive); // Prevent background scroll
+  }
 }
+
+// Close menu when clicking a link
+document.querySelectorAll("#nav a").forEach(link => {
+  link.addEventListener("click", () => {
+    const nav = document.getElementById("nav");
+    if (nav && nav.classList.contains("active")) {
+      nav.classList.remove("active");
+      document.body.classList.remove("no-scroll");
+    }
+  });
+});
 
 
 // ==========================
@@ -22,14 +97,14 @@ function filterImages(category, event) {
   cards.forEach(card => {
     const img = card.querySelector("img");
     if (category === "all" || card.classList.contains(category)) {
-      card.style.display = "block";
+      card.classList.remove("hidden");
       // Trigger re-animation
       if (img) {
         img.classList.remove("loaded");
         setTimeout(() => img.classList.add("loaded"), 10);
       }
     } else {
-      card.style.display = "none";
+      card.classList.add("hidden");
     }
   });
 }
@@ -38,23 +113,48 @@ function filterImages(category, event) {
 // ==========================
 // LIGHTBOX (FULL SCREEN VIEW)
 // ==========================
-const images = document.querySelectorAll(".gallery-grid img");
+let images = [];
 let currentIndex = 0;
 
-function openLightbox(index) {
+function openLightbox(img) {
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
+  
+  // Get all currently visible images in the gallery
+  images = Array.from(document.querySelectorAll(".gallery-grid .card:not(.hidden) img"));
 
-  if (!lightbox || !lightboxImg) return;
+  if (!lightbox || !lightboxImg || images.length === 0) return;
 
-  currentIndex = index;
-  lightbox.style.display = "flex";
+  // Find the index of the clicked image in the visible set
+  currentIndex = images.indexOf(img);
+  if (currentIndex === -1) currentIndex = 0;
+  
+  // Set source first
   lightboxImg.src = images[currentIndex].src;
+  
+  // Show lightbox
+  lightbox.style.display = "flex";
+  
+  // Trigger animation after a tiny delay
+  setTimeout(() => {
+    lightbox.classList.add("active");
+    document.body.classList.add("no-scroll");
+  }, 10);
 }
 
 function closeLightbox() {
   const lightbox = document.getElementById("lightbox");
-  if (lightbox) lightbox.style.display = "none";
+  if (!lightbox) return;
+  
+  lightbox.classList.remove("active");
+  document.body.classList.remove("no-scroll");
+
+  // Wait for transition then hide
+  setTimeout(() => {
+    if (!lightbox.classList.contains("active")) {
+      lightbox.style.display = "none";
+    }
+  }, 400);
 }
 
 function changeSlide(direction) {
@@ -62,8 +162,8 @@ function changeSlide(direction) {
 
   const lightboxImg = document.getElementById("lightbox-img");
   
-  // Add a quick fade-out effect
-  lightboxImg.style.opacity = "0";
+  // Quick fade/scale out
+  lightboxImg.style.opacity = "0.3";
   lightboxImg.style.transform = "scale(0.95)";
 
   setTimeout(() => {
@@ -73,11 +173,18 @@ function changeSlide(direction) {
 
     lightboxImg.src = images[currentIndex].src;
     
-    // Fade back in
-    lightboxImg.style.opacity = "1";
-    lightboxImg.style.transform = "scale(1)";
+    // Smoothly transition back
+    setTimeout(() => {
+      lightboxImg.style.opacity = "1";
+      lightboxImg.style.transform = "scale(1)";
+    }, 50);
   }, 200);
 }
+
+// Close when clicking outside the image
+document.getElementById("lightbox")?.addEventListener("click", (e) => {
+  if (e.target.id === "lightbox") closeLightbox();
+});
 
 
 // ==========================
@@ -86,7 +193,7 @@ function changeSlide(direction) {
 document.addEventListener("keydown", (e) => {
   const lightbox = document.getElementById("lightbox");
 
-  if (lightbox && lightbox.style.display === "flex") {
+  if (lightbox && lightbox.classList.contains("active")) {
     if (e.key === "ArrowRight") changeSlide(1);
     if (e.key === "ArrowLeft") changeSlide(-1);
     if (e.key === "Escape") closeLightbox();
@@ -95,22 +202,32 @@ document.addEventListener("keydown", (e) => {
 
 
 // ==========================
-// LAZY LOAD (FADE-IN)
+// SCROLL REVEAL & LAZY LOAD
 // ==========================
 const lazyImages = document.querySelectorAll(".gallery-grid img");
+const sections = document.querySelectorAll("section");
+const cards = document.querySelectorAll(".card");
 
-const observer = new IntersectionObserver((entries) => {
+const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      entry.target.classList.add("loaded");
-      observer.unobserve(entry.target);
+      if (entry.target.tagName === "SECTION") {
+        entry.target.classList.add("revealed");
+      } else if (entry.target.tagName === "IMG") {
+        entry.target.classList.add("loaded");
+      } else if (entry.target.classList.contains("card")) {
+        entry.target.classList.add("revealed");
+      }
+      revealObserver.unobserve(entry.target);
     }
   });
 }, {
-  threshold: 0.1
+  threshold: 0.1 // Lowered from 0.15 for better response
 });
 
-lazyImages.forEach(img => observer.observe(img));
+sections.forEach(sec => revealObserver.observe(sec));
+lazyImages.forEach(img => revealObserver.observe(img));
+cards.forEach(card => revealObserver.observe(card));
 
 
 // ==========================
@@ -122,9 +239,8 @@ window.addEventListener("scroll", () => {
   if (!header) return;
 
   if (window.scrollY > 50) {
-    header.style.background = "rgba(0,0,0,0.85)";
-    header.style.backdropFilter = "blur(14px)";
+    header.classList.add("scrolled");
   } else {
-    header.style.background = "rgba(0,0,0,0.5)";
+    header.classList.remove("scrolled");
   }
 });
