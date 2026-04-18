@@ -646,67 +646,20 @@ nav a:hover {
   max-height: 85%;
   border-radius: 4px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-  transform: scale(0.85);
-  transition: transform 0.5s cubic-bezier(0.2, 0.6, 0.2, 1);
+  transform: scale(0.9) translateY(20px);
+  opacity: 0;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
   user-select: none;
+  will-change: transform, opacity;
 }
 
 #lightbox.active img {
-  transform: scale(1);
-}
-
-/* NAVIGATION BUTTONS */
-.close,
-.prev,
-.next {
-  position: absolute;
-  color: #fff;
-  cursor: pointer;
-  z-index: 2001;
-  transition: 0.3s;
-  user-select: none;
-}
-
-.close {
-  top: 30px;
-  right: 40px;
-  font-size: 40px;
-  line-height: 1;
-}
-
-.prev,
-.next {
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 20px;
-  font-size: 35px;
-}
-
-.prev {
-  left: 20px;
-}
-
-.next {
-  right: 20px;
-}
-
-.close:hover,
-.prev:hover,
-.next:hover {
-  color: var(--gold);
+  transform: scale(1) translateY(0);
+  opacity: 1;
 }
 
 @media (max-width: 768px) {
-
-  .prev,
-  .next {
-    font-size: 28px;
-    padding: 10px;
-  }
-
-  .close {
-    top: 20px;
-    right: 25px;
-    font-size: 35px;
+  .hero h1 {
+    font-size: clamp(32px, 10vw, 60px);
   }
 }

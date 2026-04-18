@@ -164,30 +164,74 @@ function changeSlide(direction) {
   if (images.length === 0) return;
 
   const lightboxImg = document.getElementById("lightbox-img");
-  
-  // Quick fade/scale out
-  lightboxImg.style.opacity = "0.3";
-  lightboxImg.style.transform = "scale(0.95)";
+  if (!lightboxImg) return;
 
+  // STEP 1: Slide Out (in the direction of the swipe)
+  const exitDistance = direction * 80; // pixels to move
+  lightboxImg.style.opacity = "0";
+  lightboxImg.style.transform = `translateX(${-exitDistance}px) scale(0.95)`;
+
+  // STEP 2: Wait for fade out, then swap source and slide in from opposite side
   setTimeout(() => {
     currentIndex += direction;
     if (currentIndex < 0) currentIndex = images.length - 1;
     if (currentIndex >= images.length) currentIndex = 0;
 
+    // Change image source
     lightboxImg.src = images[currentIndex].src;
-    
-    // Smoothly transition back
-    setTimeout(() => {
-      lightboxImg.style.opacity = "1";
-      lightboxImg.style.transform = "scale(1)";
-    }, 50);
-  }, 200);
+
+    // Temporarily disable transition to reset position instantly
+    lightboxImg.style.transition = 'none';
+    lightboxImg.style.transform = `translateX(${exitDistance}px) scale(0.95)`;
+
+    // Force a browser reflow
+    void lightboxImg.offsetWidth;
+
+    // Restore transition and slide into final position
+    lightboxImg.style.transition = ''; // Back to CSS defaults
+    lightboxImg.style.opacity = "1";
+    lightboxImg.style.transform = "translateX(0) scale(1)";
+  }, 300); // Wait 300ms for exit animation
 }
 
 // Close when clicking outside the image
 document.getElementById("lightbox")?.addEventListener("click", (e) => {
   if (e.target.id === "lightbox") closeLightbox();
 });
+
+
+// ==========================
+// TOUCH / SWIPE SUPPORT
+// ==========================
+let touchStartX = 0;
+let touchEndX = 0;
+
+const lightbox = document.getElementById("lightbox");
+if (lightbox) {
+  lightbox.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  lightbox.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, { passive: true });
+}
+
+function handleSwipe() {
+  const swipeThreshold = 50;
+  const diff = touchStartX - touchEndX;
+
+  if (Math.abs(diff) > swipeThreshold) {
+    if (diff > 0) {
+      // Swiped Left -> Next
+      changeSlide(1);
+    } else {
+      // Swiped Right -> Previous
+      changeSlide(-1);
+    }
+  }
+}
 
 
 // ==========================
