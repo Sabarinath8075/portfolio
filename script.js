@@ -91,25 +91,65 @@ document.querySelectorAll("#nav a").forEach(link => {
 function filterImages(category, event) {
   const cards = document.querySelectorAll(".gallery-grid .card");
   const buttons = document.querySelectorAll(".filters button");
+  const viewAllBtn = document.getElementById("view-all-btn");
+  const grid = document.querySelector(".gallery-grid");
 
   // active button highlight
   buttons.forEach(btn => btn.classList.remove("active"));
   if (event) event.target.classList.add("active");
 
+  const isExpanded = grid && grid.classList.contains("expanded");
+
+  let visibleIndex = 0;
+
   // filter logic
   cards.forEach(card => {
+    const isMatch = category === "all" || card.classList.contains(category);
+    const isShowMore = card.classList.contains("show-more");
     const img = card.querySelector("img");
-    if (category === "all" || card.classList.contains(category)) {
+
+    if (isMatch) {
       card.classList.remove("hidden");
-      // Trigger re-animation
+      
+      // If we are filtering a specific category, we show everything that matches
+      if (category !== "all") {
+        if (isShowMore) card.classList.add("visible");
+      } else {
+        // If we are in "all", visibility depends on the "expanded" state
+        if (isShowMore) {
+          if (isExpanded) {
+            card.classList.add("visible");
+          } else {
+            card.classList.remove("visible");
+          }
+        }
+      }
+
+      // Trigger staggered re-animation for visible images
       if (img) {
         img.classList.remove("loaded");
-        setTimeout(() => img.classList.add("loaded"), 10);
+        // Stagger the reveal
+        setTimeout(() => {
+          if (!card.classList.contains("hidden")) {
+            img.classList.add("loaded");
+          }
+        }, 10 + (visibleIndex * 40));
+        visibleIndex++;
       }
     } else {
       card.classList.add("hidden");
     }
   });
+
+  // Hide/Show "More" button based on filter
+  if (viewAllBtn) {
+    if (category === "all") {
+      viewAllBtn.style.display = "block";
+      viewAllBtn.textContent = isExpanded ? "Less" : "More";
+    } else {
+      viewAllBtn.style.display = "none";
+    }
+  }
 }
 
 
@@ -124,7 +164,8 @@ function openLightbox(img) {
   const lightboxImg = document.getElementById("lightbox-img");
   
   // Get all currently visible images in the gallery
-  images = Array.from(document.querySelectorAll(".gallery-grid .card:not(.hidden) img"));
+  // An image is visible if its card is not hidden AND (not a show-more card OR is a visible show-more card)
+  images = Array.from(document.querySelectorAll(".gallery-grid .card:not(.hidden):not(.show-more) img, .gallery-grid .card:not(.hidden).visible img"));
 
   if (!lightbox || !lightboxImg || images.length === 0) return;
 
