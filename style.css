@@ -135,6 +135,10 @@ nav a:hover {
   color: var(--gold);
 }
 
+.menu-btn {
+  display: none;
+}
+
 /* MOBILE NAV OVERRIDES */
 @media (max-width: 768px) {
   header {
