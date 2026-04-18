@@ -1,13 +1,16 @@
 // ==========================
-// HERO LOAD EFFECT
+// INITIAL SETUP
 // ==========================
-window.addEventListener("load", () => {
-  document.body.classList.add("js-enabled"); // Activate scroll reveal animations
+// Add js-enabled immediately to avoid layout shifts during load
+document.body.classList.add("js-enabled");
+
+document.addEventListener("DOMContentLoaded", () => {
   const hero = document.querySelector(".hero");
   if (hero) {
+    // Small delay to ensure CSS transition is ready
     setTimeout(() => {
       hero.classList.add("loaded");
-    }, 100);
+    }, 50);
   }
 });
 
@@ -202,32 +205,32 @@ document.addEventListener("keydown", (e) => {
 
 
 // ==========================
-// SCROLL REVEAL & LAZY LOAD
+// SCROLL REVEAL & PERFORMANCE
 // ==========================
-const lazyImages = document.querySelectorAll(".gallery-grid img");
-const sections = document.querySelectorAll("section");
-const cards = document.querySelectorAll(".card");
-
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       if (entry.target.tagName === "SECTION") {
         entry.target.classList.add("revealed");
-      } else if (entry.target.tagName === "IMG") {
-        entry.target.classList.add("loaded");
       } else if (entry.target.classList.contains("card")) {
         entry.target.classList.add("revealed");
+        // Also load the image inside the card if it's there
+        const img = entry.target.querySelector("img");
+        if (img) img.classList.add("loaded");
       }
       revealObserver.unobserve(entry.target);
     }
   });
 }, {
-  threshold: 0.1 // Lowered from 0.15 for better response
+  threshold: 0.1,
+  rootMargin: '0px 0px -50px 0px' // Start reveal slightly before item enters viewport
 });
 
-sections.forEach(sec => revealObserver.observe(sec));
-lazyImages.forEach(img => revealObserver.observe(img));
-cards.forEach(card => revealObserver.observe(card));
+// Use DOMContentLoaded to start observing
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("section").forEach(sec => revealObserver.observe(sec));
+  document.querySelectorAll(".card:not(.show-more)").forEach(card => revealObserver.observe(card));
+});
 
 
 // ==========================

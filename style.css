@@ -6,11 +6,26 @@
   --text: #eaeaea;
 }
 
-html,
-body {
-  max-width: 100%;
+html {
   overflow-x: hidden;
   scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  /* Removed redundant overflow-x and max-width */
+}
+
+body.no-scroll {
+  overflow: hidden;
+  /* Keep this for menu locking */
 }
 
 * {
@@ -18,44 +33,42 @@ body {
   padding: 0;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
-  /* Remove blue highlight globally */
 }
 
-html {
-  overflow-x: hidden;
+/* PERFORMANCE OPTIMIZATIONS */
+section, .card {
+  will-change: transform, opacity;
+  contain: paint;
 }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Poppins', sans-serif;
-  overflow-x: hidden;
-  width: 100%;
-  -webkit-font-smoothing: antialiased;
-}
-
-body.no-scroll {
-  overflow: hidden;
-  /* Lock scroll when menu is open */
-}
-
-/* FALLBACK: If JS fails or takes too long, sections are still semi-visible or revealed by default if no JS */
+/* FALLBACK: Sections are visible by default */
 section {
   opacity: 1;
-  /* Default to visible */
   transform: translateY(0);
 }
 
-/* If JS is active, we'll hide them initially for the reveal effect */
+/* Reveal effect only if JS is enabled */
 body.js-enabled section:not(.hero) {
   opacity: 0;
   transform: translateY(30px);
-  transition: all 1s cubic-bezier(0.2, 0.6, 0.2, 1);
+  transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.6, 0.2, 1);
 }
 
 body.js-enabled section.revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Card reveal initial state */
+body.js-enabled .card:not(.show-more) {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+body.js-enabled .card.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 /* NAV */
@@ -130,23 +143,23 @@ nav a:hover {
 
   nav {
     position: absolute;
-    top: 65px;
+    top: 75px;
     right: 5%;
     width: auto;
-    background: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border-radius: 0;
-    padding: 10px;
+    background: rgba(11, 11, 11, 0.7);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-radius: 15px;
+    padding: 25px;
     flex-direction: column;
     align-items: flex-end;
-    gap: 15px;
+    gap: 20px;
     transform: translateX(120%);
     visibility: hidden;
     pointer-events: none;
     transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-    box-shadow: none;
-    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   nav.active {
