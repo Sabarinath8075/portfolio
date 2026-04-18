@@ -483,6 +483,15 @@ nav {
   transform: translateY(-5px);
 }
 
+.gallery-hint {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #555;
+  margin-top: 25px;
+  font-weight: 500;
+}
+
 .card.hidden {
   display: none !important;
   opacity: 0 !important;
