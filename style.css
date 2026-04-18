@@ -105,6 +105,8 @@ header.scrolled {
 }
 
 .logo {
+  display: flex;
+  align-items: center;
   letter-spacing: 5px;
   font-size: 20px;
   white-space: nowrap;
@@ -138,6 +140,9 @@ nav {
 }
 
 nav a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: #fff;
   text-decoration: none;
   font-size: 13px;
@@ -147,6 +152,12 @@ nav a {
   -webkit-tap-highlight-color: transparent;
   margin: 0;
   /* Reset margins */
+}
+
+nav a i {
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: normal;
 }
 
 nav a:hover {
